@@ -22,7 +22,7 @@ function App() {
           method: 'POST',
           headers: {
             'authorization': '25a85d72-aa25-4d01-872d-69558de142de',
-            'ngrok-skip-browser-warning': 'true' // Added for the first API call
+            'ngrok-skip-browser-warning': 'true'
           }
         });
 
@@ -37,7 +37,7 @@ function App() {
         const dashUrl = `https://major-distinctly-ringtail.ngrok-free.app/datalens/dash/?filename=${chartType}`;
         const imageRes = await fetch(dashUrl, {
           headers: {
-            'ngrok-skip-browser-warning': 'true', // This header is crucial for the image fetch
+            'ngrok-skip-browser-warning': 'true',
           },
         });
 
@@ -46,15 +46,13 @@ function App() {
         // Step 3: Create a blob and a temporary URL for the image
         const imageBlob = await imageRes.blob();
         const imageUrl = URL.createObjectURL(imageBlob);
-        setImage(imageUrl);
 
-        // Step 4: Set the new URL in your state
+        // Step 4: Push image as bot message
         const botMessage = { sender: 'bot', type: 'image', url: imageUrl };
         setMessages(prev => [...prev, botMessage]);
 
       } catch (err) {
         console.error(err);
-        setImage(null);
         setMessages(prev => [...prev, { sender: 'bot', text: 'Failed to fetch chart.' }]);
       } finally {
         setLoading(false);
