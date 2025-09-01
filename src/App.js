@@ -46,6 +46,7 @@ function App() {
         // Step 3: Create a blob and a temporary URL for the image
         const imageBlob = await imageRes.blob();
         const imageUrl = URL.createObjectURL(imageBlob);
+        setImage(imageUrl);
 
         // Step 4: Set the new URL in your state
         const botMessage = { sender: 'bot', type: 'image', url: imageUrl };
@@ -53,6 +54,7 @@ function App() {
 
       } catch (err) {
         console.error(err);
+        setImage(null);
         setMessages(prev => [...prev, { sender: 'bot', text: 'Failed to fetch chart.' }]);
       } finally {
         setLoading(false);
