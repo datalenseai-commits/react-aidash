@@ -5,6 +5,6 @@ export default defineConfig({
   plugins: [react()],
   base: process.env.VITE_BASE_PATH || "/react-aidash",
     build: {
-    outDir: 'dist', // This is the default, but you can explicitly set it
+    outputDirectory: 'dist', // This is the default, but you can explicitly set it
   },
 })
