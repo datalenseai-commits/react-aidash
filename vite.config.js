@@ -15,7 +15,13 @@ export default defineConfig({
   ],
   base: process.env.VITE_BASE_PATH || "/react-aidash",
   build: {
-    outDir: 'dist', // Correct key in Vite
-    minify: 'terser', // Ensure minification before obfuscation
+    outDir: 'build',        // <--- use "build" instead of "dist"
+    sourcemap: false,       // don't generate source maps (harder to reverse engineer)
+    minify: 'terser',       // use terser for strong minification
+    rollupOptions: {
+      output: {
+        manualChunks: undefined, // single bundle (optional, reduces readability further)
+      },
+    },
   },
 })
