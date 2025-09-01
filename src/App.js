@@ -62,7 +62,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Chatbot with Dynamic Charts</h1>
+      <h1>Chatbot with dynamic Charts</h1>
       <div className="chat-window">
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.sender}`}>
