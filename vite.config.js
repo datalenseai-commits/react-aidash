@@ -1,27 +1,32 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import obfuscatorPlugin from 'vite-plugin-obfuscator'
+import { terser } from 'rollup-plugin-terser'
 
 export default defineConfig({
-  plugins: [
-    react(),
-    obfuscatorPlugin({
-      rotateStringArray: true,
-      stringArray: true,
-      stringArrayThreshold: 0.75,
-      compact: true,
-      controlFlowFlattening: true,
-    })
-  ],
+  plugins: [react()],
   base: process.env.VITE_BASE_PATH || "/react-aidash",
   build: {
-    outDir: 'build',        // <--- use "build" instead of "dist"
-    sourcemap: false,       // don't generate source maps (harder to reverse engineer)
-    minify: 'terser',       // use terser for strong minification
+    outDir: 'build',             // Output folder for Vercel
+    sourcemap: false,            // Disable source maps completely
+    minify: 'terser',            // Use Terser for advanced minification
+    assetsDir: 'assets',         // Bundled files go into "assets"
     rollupOptions: {
       output: {
-        manualChunks: undefined, // single bundle (optional, reduces readability further)
+        entryFileNames: 'assets/[hash].js',    // No readable entry names
+        chunkFileNames: 'assets/[hash].js',    // No readable chunk names
+        assetFileNames: 'assets/[hash].[ext]', // Hash all other assets
       },
-    },
-  },
+      plugins: [
+        terser({
+          compress: {
+            drop_console: true,   // Remove console.log statements
+            drop_debugger: true,  // Remove debugger statements
+          },
+          mangle: {
+            toplevel: true,       // Mangle top-level variable & function names
+          }
+        })
+      ]
+    }
+  }
 })
